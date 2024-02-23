@@ -80,10 +80,7 @@ fun CountryInfoScreen() {
     }
     else {
         if (errorMessage != null && errorMessage!!.isNotEmpty()){
-            Text(
-                text = errorMessage!!,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-            )
+            CountryErrorScreen(errorMessage = errorMessage!!)
         }
         else {
             CountryInfoList(countries = countries)
