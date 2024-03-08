@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.kodeco.android.countryinfo.StateFlows
 import com.kodeco.android.countryinfo.types.Country
 
 @Composable
@@ -34,6 +35,14 @@ fun CountryInfoRow(country: Country) {
             Box (modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
+                    if (isExpanded) {
+                        // add to close
+                        StateFlows.closes.value += 1
+                    }
+                    else {
+                        // add to open
+                        StateFlows.opens.value += 1
+                    }
                     isExpanded = !isExpanded
                 }
             ) {

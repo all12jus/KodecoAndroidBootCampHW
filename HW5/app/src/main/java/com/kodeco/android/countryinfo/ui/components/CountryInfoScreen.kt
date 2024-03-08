@@ -11,11 +11,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -23,40 +18,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.countryinfo.types.Country
 import com.kodeco.android.countryinfo.types.createRetrofitService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+
+
+sealed class Resource<T> {
+    class Loading<T> : Resource<T>()
+    data class Success<T>(val data: T) : Resource<T>()
+    data class Error<T>(val message: String) : Resource<T>()
+}
+
+
+fun getAllCountriesFlow(): Flow<Resource<List<Country>>> = flow {
+    val service = createRetrofitService()
+    try {
+        emit(Resource.Loading())
+        val response = service.getAllCountries()
+        if (response.isSuccessful && response.body() != null) {
+            emit(Resource.Success(response.body()!!))
+        } else {
+            emit(Resource.Error("Error fetching countries: ${response.message()}"))
+        }
+    } catch (e: Exception) {
+        emit(Resource.Error("Error fetching countries: ${e.message}"))
+    }
+}
 
 @Composable
-fun CountryInfoScreen() {
-
-    var countries by remember { mutableStateOf<List<Country>>(emptyList()) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
-    var isLoading by remember { mutableStateOf<Boolean>(true) }
-
-    LaunchedEffect(key1 = true) {  // 'true' as a constant means this effect only runs once
-        val service = createRetrofitService()
-        try {
-            val response = service.getAllCountries()
-            if (response.isSuccessful && response.body() != null) {
-                countries = response.body()!!
-            }
-            else {
-                errorMessage = "Error Fetching countries ${response.message()}"
-            }
-        } catch (e: Exception) {
-            errorMessage = "Error Fetching countries ${e.message}"
-        }
-
-        finally {
-            isLoading = false
-        }
-
-        println(errorMessage)
-        println(countries)
-
-
-    }
-
-
-    if (isLoading){
+fun CountryInfoScreen(countries: List<Country>, errorMessage: String?, isLoading: Boolean) {
+        if (isLoading){
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
@@ -86,8 +76,6 @@ fun CountryInfoScreen() {
             CountryInfoList(countries = countries)
         }
     }
-
-
 }
 
 // TODO fill out the preview.
