@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.kodeco.android.countryinfo.types.Country
-import com.kodeco.android.countryinfo.ui.viewModels.CountryInfoViewModel
+import com.kodeco.android.countryinfo.ui.screens.countryList.CountryInfoViewModel
 
 @Composable
 fun CountryInfoList(viewModel: CountryInfoViewModel, countries: List<Country>) {

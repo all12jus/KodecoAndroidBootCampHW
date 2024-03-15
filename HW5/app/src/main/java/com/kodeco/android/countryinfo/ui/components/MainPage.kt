@@ -20,17 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.kodeco.android.countryinfo.ui.viewModels.CountryInfoViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.kodeco.android.countryinfo.ui.screens.countryList.CountryInfoScreen
+import com.kodeco.android.countryinfo.ui.screens.countryList.CountryInfoViewModel
 
 @Composable
 fun MainView(viewModel: CountryInfoViewModel) {
     val timerFlow by viewModel.timerFlow.collectAsState()
-//    val counter by StateFlows.timerFlow.collectAsState()
     val opens by viewModel.opens.collectAsState()
-//    val opens by StateFlows.opens.collectAsState()
     val closes by viewModel.closes.collectAsState()
-//    val closes by StateFlows.closes.collectAsState()
 
     val reloadRequested = remember { mutableStateOf(false) }
 
@@ -46,7 +43,6 @@ fun MainView(viewModel: CountryInfoViewModel) {
             viewModel.reloadData()
             reloadRequested.value = false
         }
-
     }
 
     Scaffold(
@@ -57,7 +53,6 @@ fun MainView(viewModel: CountryInfoViewModel) {
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-//                                Text("Small Top App Bar")
                     Row {
                         Text(text = "Timer: $timerFlow Actions: $opens / $closes", modifier = Modifier.padding(8.dp))
 
@@ -86,16 +81,7 @@ fun MainView(viewModel: CountryInfoViewModel) {
         Surface (
             modifier = Modifier.padding(it)
         ) {
-            //                Text(text = "Timer: ${counter.toString()}")
-            // TODO complete the composable content and provide
-            //  models for Country, CountryName, and CountryFlags.
-            CountryInfoScreen(
-                viewModel = viewModel
-            )
-
+            CountryInfoScreen(viewModel = viewModel)
         }
-
-
     }
-
 }

@@ -1,6 +1,6 @@
 package com.kodeco.android.countryinfo.types
 
-import com.kodeco.android.countryinfo.ui.components.Resource
+import com.kodeco.android.countryinfo.ui.screens.countryList.Resource
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +9,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
-import java.util.Dictionary
 
 interface RestCountriesService {
     @GET("all")
