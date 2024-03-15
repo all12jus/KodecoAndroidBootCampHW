@@ -11,16 +11,15 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kodeco.android.countryinfo.types.Country
-import com.kodeco.android.countryinfo.types.createRetrofitService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-
+import com.kodeco.android.countryinfo.ui.viewModels.CountryInfoViewModel
 
 sealed class Resource<T> {
     class Loading<T> : Resource<T>()
@@ -29,24 +28,17 @@ sealed class Resource<T> {
 }
 
 
-fun getAllCountriesFlow(): Flow<Resource<List<Country>>> = flow {
-    val service = createRetrofitService()
-    try {
-        emit(Resource.Loading())
-        val response = service.getAllCountries()
-        if (response.isSuccessful && response.body() != null) {
-            emit(Resource.Success(response.body()!!))
-        } else {
-            emit(Resource.Error("Error fetching countries: ${response.message()}"))
-        }
-    } catch (e: Exception) {
-        emit(Resource.Error("Error fetching countries: ${e.message}"))
-    }
-}
 
+
+// countries: List<Country>, errorMessage: String?, isLoading: Boolean
 @Composable
-fun CountryInfoScreen(countries: List<Country>, errorMessage: String?, isLoading: Boolean) {
-        if (isLoading){
+fun CountryInfoScreen(viewModel: CountryInfoViewModel) {
+    // Collecting StateFlows from the ViewModel
+    val countries by viewModel.countries.collectAsState(initial = emptyList())
+    val isLoading by viewModel.isLoading.collectAsState(initial = false)
+    val errorMessage by viewModel.errorMessage.collectAsState(initial = null)
+
+    if (isLoading){
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()

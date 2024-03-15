@@ -24,12 +24,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kodeco.android.countryinfo.types.CountriesRepository
 import com.kodeco.android.countryinfo.types.Country
-import com.kodeco.android.countryinfo.types.createRetrofitService
 import com.kodeco.android.countryinfo.ui.components.CountryInfoScreen
+import com.kodeco.android.countryinfo.ui.components.MainView
 import com.kodeco.android.countryinfo.ui.components.Resource
-import com.kodeco.android.countryinfo.ui.components.getAllCountriesFlow
 import com.kodeco.android.countryinfo.ui.theme.MyApplicationTheme
+import com.kodeco.android.countryinfo.ui.viewModels.CountryInfoViewModel
+import com.kodeco.android.countryinfo.ui.viewModels.CountryInfoViewModelFactory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -70,103 +73,55 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            val counter by StateFlows.timerFlow.collectAsState()
-            val opens by StateFlows.opens.collectAsState()
-            val closes by StateFlows.closes.collectAsState()
-            val reloadCount by StateFlows.reloadCount.collectAsState()
 
-            var countries by remember { mutableStateOf<List<Country>>(emptyList()) }
-            var errorMessage by remember { mutableStateOf<String?>(null) }
-            var isLoading by remember { mutableStateOf<Boolean>(true) }
 
-            val reloadRequested = remember { mutableStateOf(false) }
+//            var countries by remember { mutableStateOf<List<Country>>(emptyList()) }
+//            var errorMessage by remember { mutableStateOf<String?>(null) }
+//            var isLoading by remember { mutableStateOf<Boolean>(true) }
 
-            suspend fun reloadData() {
-//                isLoading = true
-                countries = emptyList()
-                StateFlows.reloadCount.value += 1
-                getAllCountriesFlow().collect {
-                    when (it) {
-                        is Resource.Error -> {
-                            errorMessage = it.message
-                            isLoading = false
-                        }
-                        is Resource.Loading -> {
-                            isLoading = true
-                        }
-                        is Resource.Success -> {
-                            errorMessage = null
-                            isLoading = false
-                            countries = it.data
-                        }
-                    }
-                }
-            }
 
-            LaunchedEffect(key1 = true) {  // 'true' as a constant means this effect only runs once
-                reloadData()
-            }
 
-            LaunchedEffect(reloadRequested.value) {
-                if (reloadRequested.value) {
-                    reloadData()
-                    reloadRequested.value = false
-                }
+//            suspend fun reloadData() {
+////                isLoading = true
+//                countries = emptyList()
+//                StateFlows.reloadCount.value += 1
+//                getAllCountriesFlow().collect {
+//                    when (it) {
+//                        is Resource.Error -> {
+//                            errorMessage = it.message
+//                            isLoading = false
+//                        }
+//                        is Resource.Loading -> {
+//                            isLoading = true
+//                        }
+//                        is Resource.Success -> {
+//                            errorMessage = null
+//                            isLoading = false
+//                            countries = it.data
+//                        }
+//                    }
+//                }
+//            }
 
-            }
+//            LaunchedEffect(key1 = true) {  // 'true' as a constant means this effect only runs once
+//                reloadData()
+//            }
+//
+//            LaunchedEffect(reloadRequested.value) {
+//                if (reloadRequested.value) {
+//                    reloadData()
+//                    reloadRequested.value = false
+//                }
+//
+//            }
 
             MyApplicationTheme {
 
-                Scaffold(
-                    topBar = {
-                        TopAppBar (
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.primary,
-                            ),
-                            title = {
-//                                Text("Small Top App Bar")
-                                Row {
-                                    Text(text = "Timer: $counter Actions: $opens / $closes", modifier = Modifier.padding(8.dp))
-
-                                    Button(onClick = {
-                                        reloadRequested.value = true
-                                    }, enabled = !isLoading) {
-                                        Text("Refresh")
-                                    }
-                                }
-
-                            }
-                        )
-                    },
-                    bottomBar = {
-                        BottomAppBar {
-                            Text(
-                                text = "Time Awake: $counter\nReload Count: $reloadCount",
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .fillMaxWidth()
-                            )
-                        }
-                    }
-                ) { it ->
-                    Surface (
-                        modifier = Modifier.padding(it)
-                    ) {
-                        //                Text(text = "Timer: ${counter.toString()}")
-                        // TODO complete the composable content and provide
-                        //  models for Country, CountryName, and CountryFlags.
-                        CountryInfoScreen(
-                            countries = countries,
-                            errorMessage = errorMessage,
-                            isLoading = isLoading
-                        )
-
-                    }
-
-
-                }
+                MainView(viewModel = viewModel(
+                    factory = CountryInfoViewModelFactory(
+                        repository = CountriesRepository()
+                    )
+                ))
 
             }
         }
