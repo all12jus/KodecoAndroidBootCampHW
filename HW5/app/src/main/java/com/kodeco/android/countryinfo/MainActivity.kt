@@ -42,25 +42,25 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 
-@OptIn(DelicateCoroutinesApi::class)
-object StateFlows {
-    var timerFlow = MutableStateFlow(0)
-
-    var opens = MutableStateFlow(0)
-    var closes = MutableStateFlow(0)
-
-    // this one helped me figure out that the other way I was doing it was double reloading.
-    var reloadCount = MutableStateFlow(0)
-
-    init {
-        GlobalScope.launch {
-            while (true) {
-                delay(1_000L)
-                timerFlow.value += 1
-            }
-        }
-    }
-}
+//@OptIn(DelicateCoroutinesApi::class)
+//object StateFlows {
+//    var timerFlow = MutableStateFlow(0)
+//
+//    var opens = MutableStateFlow(0)
+//    var closes = MutableStateFlow(0)
+//
+//    // this one helped me figure out that the other way I was doing it was double reloading.
+//    var reloadCount = MutableStateFlow(0)
+//
+//    init {
+//        GlobalScope.launch {
+//            while (true) {
+//                delay(1_000L)
+//                timerFlow.value += 1
+//            }
+//        }
+//    }
+//}
 
 
 

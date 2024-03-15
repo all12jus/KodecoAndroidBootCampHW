@@ -20,14 +20,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.kodeco.android.countryinfo.StateFlows
 import com.kodeco.android.countryinfo.ui.viewModels.CountryInfoViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun MainView(viewModel: CountryInfoViewModel) {
-    val counter by StateFlows.timerFlow.collectAsState()
-    val opens by StateFlows.opens.collectAsState()
-    val closes by StateFlows.closes.collectAsState()
+    val timerFlow by viewModel.timerFlow.collectAsState()
+//    val counter by StateFlows.timerFlow.collectAsState()
+    val opens by viewModel.opens.collectAsState()
+//    val opens by StateFlows.opens.collectAsState()
+    val closes by viewModel.closes.collectAsState()
+//    val closes by StateFlows.closes.collectAsState()
 
     val reloadRequested = remember { mutableStateOf(false) }
 
@@ -56,7 +59,7 @@ fun MainView(viewModel: CountryInfoViewModel) {
                 title = {
 //                                Text("Small Top App Bar")
                     Row {
-                        Text(text = "Timer: $counter Actions: $opens / $closes", modifier = Modifier.padding(8.dp))
+                        Text(text = "Timer: $timerFlow Actions: $opens / $closes", modifier = Modifier.padding(8.dp))
 
                         Button(onClick = {
                             reloadRequested.value = true
@@ -71,7 +74,7 @@ fun MainView(viewModel: CountryInfoViewModel) {
         bottomBar = {
             BottomAppBar {
                 Text(
-                    text = "Time Awake: $counter\nReload Count: $reloadCount",
+                    text = "Time Awake: $timerFlow\nReload Count: $reloadCount",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(8.dp)

@@ -5,12 +5,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.kodeco.android.countryinfo.types.Country
+import com.kodeco.android.countryinfo.ui.viewModels.CountryInfoViewModel
 
 @Composable
-fun CountryInfoList(countries: List<Country>) {
+fun CountryInfoList(viewModel: CountryInfoViewModel, countries: List<Country>) {
     LazyColumn {
         items(countries) { country ->
-            CountryInfoRow(country = country)
+            CountryInfoRow(viewModel = viewModel, country = country)
         }
     }
 }

@@ -65,7 +65,7 @@ fun CountryInfoScreen(viewModel: CountryInfoViewModel) {
             CountryErrorScreen(errorMessage = errorMessage!!)
         }
         else {
-            CountryInfoList(countries = countries)
+            CountryInfoList(viewModel = viewModel, countries = countries)
         }
     }
 }
