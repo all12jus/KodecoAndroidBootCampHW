@@ -2,6 +2,7 @@ package com.kodeco.android.countryinfo.ui.screens.countryList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.kodeco.android.countryinfo.types.Country
 import com.kodeco.android.countryinfo.types.ICountriesRepository
 import kotlinx.coroutines.GlobalScope
@@ -12,7 +13,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class CountryInfoViewModel(private var repository: ICountriesRepository): ViewModel() {
+class CountryInfoViewModel(
+    private var repository: ICountriesRepository,
+    private val navController: NavController
+): ViewModel() {
 
     init {
         GlobalScope.launch {
@@ -38,24 +42,10 @@ class CountryInfoViewModel(private var repository: ICountriesRepository): ViewMo
     private val _timerFlow = MutableStateFlow<Int>(0)
     val timerFlow = _timerFlow.asStateFlow()
 
-    private val _opens = MutableStateFlow<Int>(0)
-    val opens = _opens.asStateFlow()
-
-    private val _closes = MutableStateFlow<Int>(0)
-    val closes = _closes.asStateFlow()
-
     fun reloadData() {
         viewModelScope.launch {
             _reloadData()
         }
-    }
-
-    fun incrementCloses() {
-        _closes.value += 1
-    }
-
-    fun incrementOpens() {
-        _opens.value += 1
     }
 
     private suspend fun _reloadData() {
@@ -82,4 +72,9 @@ class CountryInfoViewModel(private var repository: ICountriesRepository): ViewMo
             }
         }
     }
+
+    fun onCountryRowTap(countryName: String) {
+        navController.navigate(route = "country/$countryName")
+    }
+
 }

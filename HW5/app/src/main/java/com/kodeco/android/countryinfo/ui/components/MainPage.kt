@@ -26,8 +26,6 @@ import com.kodeco.android.countryinfo.ui.screens.countryList.CountryInfoViewMode
 @Composable
 fun MainView(viewModel: CountryInfoViewModel) {
     val timerFlow by viewModel.timerFlow.collectAsState()
-    val opens by viewModel.opens.collectAsState()
-    val closes by viewModel.closes.collectAsState()
 
     val reloadRequested = remember { mutableStateOf(false) }
 
@@ -54,7 +52,7 @@ fun MainView(viewModel: CountryInfoViewModel) {
                 ),
                 title = {
                     Row {
-                        Text(text = "Timer: $timerFlow Actions: $opens / $closes", modifier = Modifier.padding(8.dp))
+                        Text(text = "Timer: $timerFlow", modifier = Modifier.padding(8.dp))
 
                         Button(onClick = {
                             reloadRequested.value = true

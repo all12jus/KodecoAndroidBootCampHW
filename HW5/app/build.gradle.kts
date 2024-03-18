@@ -77,6 +77,9 @@ dependencies {
     implementation(libs.retrofit.moshi.converter)
     implementation(libs.coil)
 
+    implementation(libs.androidx.navigation.compose.v242)
+
+
     ksp (libs.moshiCodeGen)
 
     testImplementation(libs.junit)
