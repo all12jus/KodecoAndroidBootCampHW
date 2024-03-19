@@ -79,12 +79,7 @@ fun CountryDetailsScreen(country: Country, viewModel: CountryDetailsViewModel) {
 fun CountryDetailsScreenPreview() { }
 
 
-//class CountryDetailsViewModel(private var repository: ICountriesRepository): ViewModel() {
-//    fun getCo
-//}
-
 class CountryDetailsViewModel(
-//    private var repository: ICountriesRepository,
     private val navController: NavController
 ): ViewModel() {
 
@@ -95,7 +90,6 @@ class CountryDetailsViewModel(
 }
 
 class CountryDetailsViewModelFactory (
-//    private val repository: ICountriesRepository,
     private val navController: NavController
 ) : ViewModelProvider.NewInstanceFactory() {
 
