@@ -16,15 +16,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyApplicationTheme {
-
                 CountryInfoNavHost(repository = repository)
-
-//                MainView(viewModel = viewModel(
-//                    factory = CountryInfoViewModelFactory(
-//                        repository = CountriesRepository()
-//                    )
-//                ))
-
             }
         }
     }
