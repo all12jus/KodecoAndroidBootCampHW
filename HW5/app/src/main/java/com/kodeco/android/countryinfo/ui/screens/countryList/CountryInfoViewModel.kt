@@ -77,4 +77,9 @@ class CountryInfoViewModel(
         navController.navigate(route = "country/$countryName")
     }
 
+
+    fun openAbout(){
+        navController.navigate("about")
+    }
+
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.kodeco.android.countryinfo.types.CountriesRepository
-import com.kodeco.android.countryinfo.ui.components.CountryInfoNavHost
+import com.kodeco.android.countryinfo.ui.screens.countryList.CountryInfoNavHost
 import com.kodeco.android.countryinfo.ui.theme.MyApplicationTheme
 
 

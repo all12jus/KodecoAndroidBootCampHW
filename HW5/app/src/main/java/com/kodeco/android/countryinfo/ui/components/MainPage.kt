@@ -52,12 +52,18 @@ fun MainView(viewModel: CountryInfoViewModel) {
                 ),
                 title = {
                     Row {
-                        Text(text = "Timer: $timerFlow", modifier = Modifier.padding(8.dp))
+//                        Text(text = "Timer: $timerFlow", modifier = Modifier.padding(8.dp))
 
                         Button(onClick = {
                             reloadRequested.value = true
                         }, enabled = !isLoading) {
                             Text("Refresh")
+                        }
+
+                        Button(onClick = {
+                            viewModel.openAbout()
+                        }) {
+                            Text("About")
                         }
                     }
 
